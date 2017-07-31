@@ -14,7 +14,11 @@ class Machine
     # STEP 2
     @stock = Set.new
     @stock << Stock.new("コーラ",120, 5)
-    @stock << Stock.new("レッドブル", 200, 4)
+    @stock << Stock.new("レッドブル", 200, 5)
+    @stock << Stock.new("水", 100, 5)
+
+    # STEP 3
+    @sales = 0
   end
 
   
@@ -40,8 +44,21 @@ class Machine
     @stock[item] -= num
   end
   
-  def ls
-    @stock.each{|item| p item.name}
+  
+  def available
+    available_list = []
+    @stock.each{|item| if item.price <= @remains; available_list << item.name;end  }
+    return available_list
+  end
+
+  def buy(want)
+    @stock.each do |item| 
+      if item.name == want
+        item.num -= 1
+        @sales += item.price
+        return change = @remains - item.price
+      end
+    end
   end
 end
 
@@ -58,6 +75,10 @@ machine1.refund
 p machine1.put_money(100)
 p machine1.put_money(50)
 
-machine1.ls
+p machine1.stock 
+
+puts "購入可能: #{machine1.available}"
+puts "おつり: #{machine1.buy("水")}"
+p machine1.stock
 
 
