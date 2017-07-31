@@ -3,7 +3,7 @@ require 'set'
 class Machine
   attr_accessor :total_putting
   def initialize
-    @Usable_money = Set.new [10, 50, 100, 500, 1000].freeze # 名前は expected でもいいかもしれない
+    @Usable_money = Set.new [10, 50, 100, 500, 1000].freeze # 名前は expected_money でもいいかもしれない
     @total_putting = 0
   end
 
@@ -16,7 +16,7 @@ class Machine
   end
   
   def refund
-    puts "output #{@total_putting}"
+    puts "refund #{@total_putting}"
     @total_putting = 0
   end
 end
@@ -29,5 +29,9 @@ p machine1.usable_money?(1)
 p machine1.put_money(10)
 p machine1.put_money(10)
 p machine1.put_money(100)
+
+machine1.refund
+p machine1.put_money(100)
+p machine1.put_money(50)
 
 
