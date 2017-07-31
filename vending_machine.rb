@@ -37,14 +37,6 @@ class Machine
   end
   
   # STEP 2
-  def add_stock(item, price, num)
-    @stock[item] += num
-  end
-  def reduce_stock(item, price, num)
-    @stock[item] -= num
-  end
-  
-  
   def available
     available_list = []
     @stock.each{|item| if item.price <= @remains; available_list << item.name;end  }
