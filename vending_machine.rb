@@ -48,7 +48,7 @@ class Machine
       if item.name == want
         item.num -= 1
         @sales += item.price
-        return change = @remains - item.price
+        return @remains -= item.price
       end
     end
   end
