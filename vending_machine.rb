@@ -39,7 +39,7 @@ class Machine
   # STEP 2
   def available
     available_list = []
-    @stock.each{|item| if item.price <= @remains; available_list << item.name;end  }
+    @stock.each{|item| if item.price <= @remains && item.num > 0; available_list << item.name;end  }
     return available_list
   end
 
