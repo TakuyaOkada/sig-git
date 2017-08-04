@@ -3,11 +3,11 @@ require 'set'
 class Machine
   attr_reader :remains, :stock
 
-  # クラスDrinkを作らずに，在庫データを保持する新しいStructを作る． 
+  # クラスDrinkを作らない代わりに，在庫データを保持する新しいStruct(商品名，値段，在庫数)を作る
   Stock = Struct.new(:name, :price, :num)
 
   def initialize(remains, usable_money)
-    # STEP 1 投入金額の残金，扱えるお金
+    # STEP 1 (投入金額の残金，扱えるお金)
     @remains, @Usable_money = remains, Set.new(usable_money) 
 
     # STEP 2
@@ -66,6 +66,7 @@ class Machine
       end
     end
   end
+
 end
 
 
