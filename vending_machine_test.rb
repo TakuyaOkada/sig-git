@@ -1,8 +1,8 @@
 require './vending_machine.rb'
 
-# test
-puts "何かいりようかい"
+puts "Hello"
 test_machine = Machine.new(0, [10, 50, 100, 500, 1000].freeze)
+
 #STEP0
 while true 
   puts "input [coins]/buy/refund/exit"
@@ -13,19 +13,21 @@ while true
   when "exit"
     break
   when "buy"
-    puts "なににします？"  
+    puts "What do you want?"  
     want = gets.chomp
     if test_machine.available?(want)
       test_machine.buy(want)
+      puts "You got #{want}!"
+      test_machine.refund
     end
   else
     coin = input.to_i # 期待されない文字列は0になる
     if test_machine.can?(coin)# STEP 1
       test_machine.put_money(coin)
-      puts "投入金額総計: #{test_machine.remains}"
-      puts "購入可能: #{test_machine.available_list}"
+      puts "Total input: #{test_machine.remains}"
+      puts "Available: #{test_machine.available_list}"
     else
-      puts "釣銭: #{coin}"
+      puts "refund: #{coin}" #扱えないお金
     end
   end  
 end
