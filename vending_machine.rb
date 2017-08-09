@@ -52,6 +52,7 @@ class Machine
     @stock.select{ |item| item.price <= @remains && item.num > 0 }
   end
 
+  # その商品が買えるか真偽
   def can_buy?(want)
     @stock.find_index { |item| item.name == want && item.price <= @remains && item.num > 0 }
   end
