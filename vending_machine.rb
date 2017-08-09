@@ -1,7 +1,7 @@
 require 'set'
 
 class Machine
-  attr_reader :remains, :stock
+  attr_reader :remains, :stock, :sales
 
   # クラスDrinkを作らない代わりに，在庫データを保持する新しいStruct(商品名，値段，在庫数)を作る
   Stock = Struct.new(:name, :price, :num)
@@ -93,3 +93,21 @@ machine1.buy("水")
 p machine1.stock
 
 
+machine1.put_money(500)
+machine1.buy("水")
+machine1.put_money(500)
+machine1.buy("水")
+machine1.put_money(500)
+machine1.buy("水")
+machine1.put_money(500)
+machine1.buy("水")
+
+p machine1.stock
+p machine1.sales
+
+machine1.put_money(500)
+machine1.buy("水")
+
+
+p machine1.stock
+p machine1.sales
