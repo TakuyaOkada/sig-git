@@ -6,13 +6,14 @@ class Machine
   # クラスDrinkを作らない代わりに，在庫データを保持する新しいStruct(商品名，値段，在庫数)を作る
   Stock = Struct.new(:name, :price, :num)
 
-  def initialize(remains, usable_money)
+  def initialize(usable_money)
     # STEP 1 (投入金額の残金，扱えるお金)
-    @remains, @Usable_money = remains, Set.new(usable_money) 
+    @remains = 0
+    @Usable_money = Set.new(usable_money) 
 
     # STEP 2
     # 在庫
-    @stock = Set.new
+    @stock = []
     @stock << Stock.new("コーラ",120, 5)
     @stock << Stock.new("レッドブル", 200, 5)
     @stock << Stock.new("水", 100, 5)
@@ -20,22 +21,23 @@ class Machine
     # STEP 3
     # 売上
     @sales = 0
-    
-    # STEP 4
-    # 購入可能な商品を保持する集合
-    @available_list = Set.new
   end
 
   
   # STEP 1
   # 使えるお金かどうか真偽
-  def can?(money)
+  def can_use?(money)
     @Usable_money.include?(money)
   end
 
   # 自販機にお金を投入する
   def put_money(money)
-    @remains += money 
+    if can_use?(money)
+      @remains += money
+    else
+      puts "NOT usable: #{money}"
+      @remains
+    end 
   end
   
   # 返金操作を行う
@@ -45,49 +47,46 @@ class Machine
   end
   
   # STEP 2
-  # 購入可能な商品の集合を「人間が読みやすい形に表現して(inspect)」返す
+  # 購入可能な商品リストを返す
   def available_list
-    #@stock.each{|item| if item.price <= @remains && item.num > 0; @available_list << item.name;end  }
-    @stock.each{|item| @available_list << item.name if item.price <= @remains && item.num > 0 }
-    return @available_list.inspect
+    @stock.select{ |item| item.price <= @remains && item.num > 0 }
   end
 
-  # ある商品が購入可能か調べる
-  def available?(item)
-    return @available_list.include?(item)
+  def can_buy?(want)
+    @stock.find_index { |item| item.name == want && item.price <= @remains && item.num > 0 }
   end
 
   # 商品を購入する
   def buy(want)
-    @stock.each do |item| 
-      if item.name == want
-        item.num -= 1
-        @sales += item.price
-        @remains -= item.price
-        refund
-      end
+    if index = can_buy?(want)
+      item = @stock[index]
+      item.num -= 1
+      @sales += item.price
+      @remains -= item.price
+      refund
     end
   end
 
 end
 
 
-machine1 = Machine.new(0, [10, 50, 100, 500, 1000].freeze)
+machine1 = Machine.new([10, 50, 100, 500, 1000].freeze)
 
-p machine1.can?(10)
-p machine1.can?(1)
+p machine1.can_use?(10)
+p machine1.can_use?(1)
+
 p machine1.put_money(10)
 p machine1.put_money(10)
-p machine1.put_money(100)
-
+p machine1.put_money(5)
+p machine1.put_money(500)
 machine1.refund
+
 p machine1.put_money(100)
 p machine1.put_money(50)
 
-p machine1.stock 
+p machine1.stock
 
 puts "購入可能: #{machine1.available_list}"
-p machine1.available?("水")
 machine1.buy("水")
 p machine1.stock
 
