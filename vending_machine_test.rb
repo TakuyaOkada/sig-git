@@ -18,7 +18,6 @@ while true
     if test_machine.available?(want)
       test_machine.buy(want)
       puts "You got #{want}!"
-      test_machine.refund
     end
   else
     coin = input.to_i # 期待されない文字列は0になる

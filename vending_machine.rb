@@ -47,7 +47,8 @@ class Machine
   # STEP 2
   # 購入可能な商品の集合を「人間が読みやすい形に表現して(inspect)」返す
   def available_list
-    @stock.each{|item| if item.price <= @remains && item.num > 0; @available_list << item.name;end  }
+    #@stock.each{|item| if item.price <= @remains && item.num > 0; @available_list << item.name;end  }
+    @stock.each{|item| @available_list << item.name if item.price <= @remains && item.num > 0 }
     return @available_list.inspect
   end
 
@@ -62,7 +63,8 @@ class Machine
       if item.name == want
         item.num -= 1
         @sales += item.price
-        return @remains -= item.price
+        @remains -= item.price
+        refund
       end
     end
   end
@@ -87,7 +89,6 @@ p machine1.stock
 puts "購入可能: #{machine1.available_list}"
 p machine1.available?("水")
 machine1.buy("水")
-machine1.refund
 p machine1.stock
 
 
