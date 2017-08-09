@@ -52,14 +52,14 @@ class Machine
     @stock.select{ |item| item.price <= @remains && item.num > 0 }
   end
 
-  # その商品が買えるか真偽．購入可能ならその商品の@stockのインデックスを返す
-  def can_buy?(want)
+  # その商品が買えるか真偽．購入可能ならその商品の@stockのインデックスを返し，そうでなければnilを返す
+  def where_can_buy(want)
     @stock.find_index { |item| item.name == want && item.price <= @remains && item.num > 0 }
   end
 
   # 商品を購入する
   def buy(want)
-    if index = can_buy?(want)
+    if index = where_can_buy(want)
       item = @stock[index]
       item.num -= 1
       @sales += item.price
@@ -88,6 +88,7 @@ p machine1.put_money(50)
 p machine1.stock
 
 puts "購入可能: #{machine1.available_list}"
+p machine1.where_can_buy("レッドブル")
 machine1.buy("水")
 p machine1.stock
 
